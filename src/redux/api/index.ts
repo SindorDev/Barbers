@@ -2,7 +2,7 @@ import { fetchBaseQuery, retry, createApi } from "@reduxjs/toolkit/query/react";
 // import { signOut } from "../slice/authSlice";
 
 const baseQuery = async (args: any, api: any, extraOptions: any) => {
-    const {dispatch} = api;
+    // const {dispatch} = api;
     const rawBaseQuery = fetchBaseQuery({
         baseUrl: "https://dummyjson.com/",
         prepareHeaders: (headers) => {

@@ -1,6 +1,5 @@
-import { Spin, Flex, Typography } from 'antd';
+import { Spin, Flex } from 'antd';
 import { ReactNode, Suspense } from "react"
-const {Title} = Typography
 const Loading = () => {
 
      return (
