@@ -1,3 +1,13 @@
+export interface IUser {
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+  phone: string;
+  address: string;
+  avatar: string;
+  token: string;
+}
 export interface IProduct {
   id: number;
   title: string;
@@ -21,6 +31,7 @@ export interface IProduct {
   meta: Meta;
   images: string[];
   thumbnail: string;
+  token: string;
 }
 export interface Dimensions {
   width: number;
@@ -45,7 +56,7 @@ export interface Review {
 
 export interface Response {
   message: string;
-  payload: IProduct[];
+  payload:  IProduct | IUser;
   token: string;
   firstName: string;
   image: string;

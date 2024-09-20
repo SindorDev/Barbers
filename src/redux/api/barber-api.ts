@@ -5,7 +5,7 @@ const BarbersApi = api.injectEndpoints({
     endpoints: (build) => ({
         getBarbers: build.query<Response, void>({
             query: () => ({
-                url: "/products",
+                url: 'https://dummyjson.com/products'
             }),
             providesTags: ["Barbers"]
         })

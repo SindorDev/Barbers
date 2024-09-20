@@ -4,7 +4,7 @@ import { Container } from "../../utils"
 const Contact = () => {
   const {data} = useGetBarbersQuery()
   return (
-    <section>
+    <section className="bg-black">
       <Container>
         <div className="flex w-full">
           <div className="w-full min-h-full bg-black">

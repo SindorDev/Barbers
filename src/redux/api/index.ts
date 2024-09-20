@@ -1,10 +1,10 @@
 import { fetchBaseQuery, retry, createApi } from "@reduxjs/toolkit/query/react";
-// import { signOut } from "../slice/authSlice";
+import { signOut } from "../slices/authSlice";
 
 const baseQuery = async (args: any, api: any, extraOptions: any) => {
-    // const {dispatch} = api;
+    const {dispatch} = api;
     const rawBaseQuery = fetchBaseQuery({
-        baseUrl: "https://dummyjson.com/",
+        baseUrl: "http://localhost:7777/api/",
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("token") as string;
 
@@ -23,7 +23,7 @@ const baseQuery = async (args: any, api: any, extraOptions: any) => {
     if(response.error){
         const {status} = response.error;
         if(status === 401 || status === 403){
-       //      dispatch(signOut())
+            dispatch(signOut())
         }
     }
 

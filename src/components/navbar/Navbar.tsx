@@ -1,3 +1,4 @@
+import { AiOutlineUser } from "react-icons/ai"; 
 import { NavLink } from "react-router-dom"
 import { Container } from "../../utils"
 
@@ -18,14 +19,20 @@ const Navbar = () => {
                 </li>
                 
                 <li>
-                  <NavLink to={"/"} className=" text-[23px] font-normal leading-[34px] text-black hover:text-[#B5AF93]">
+                  <NavLink to={"/our"} className=" text-[23px] font-normal leading-[34px] text-black hover:text-[#B5AF93]">
                     Our Teams
                   </NavLink>
                 </li>
                 
                 <li>
-                  <NavLink to={"/"} className=" text-[23px] font-normal leading-[34px] text-black hover:text-[#B5AF93]">
+                  <NavLink to={"/gallery"} className=" text-[23px] font-normal leading-[34px] text-black hover:text-[#B5AF93]">
                     Gallery
+                  </NavLink>
+                </li>
+                
+                <li>
+                  <NavLink to={"/profile"} className=" text-[23px] font-normal leading-[34px] text-black hover:text-[#B5AF93]">
+                    <AiOutlineUser size={30} />
                   </NavLink>
                 </li>
               </ul>
