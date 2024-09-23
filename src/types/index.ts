@@ -1,5 +1,5 @@
 export interface IUser {
-  id: number;
+  _id: number;
   username: string;
   email: string;
   password: string;
@@ -7,6 +7,10 @@ export interface IUser {
   address: string;
   avatar: string;
   token: string;
+  first_name : string;
+  last_name: string;
+  role: string
+  age: number
 }
 export interface IProduct {
   id: number;
@@ -31,7 +35,6 @@ export interface IProduct {
   meta: Meta;
   images: string[];
   thumbnail: string;
-  token: string;
 }
 export interface Dimensions {
   width: number;
@@ -56,15 +59,13 @@ export interface Review {
 
 export interface Response {
   message: string;
-  payload:  IProduct | IUser;
+  payload:  IUser;
   token: string;
-  firstName: string;
   image: string;
   university: string;
   gender: string;
   email: string;
   products: IProduct[],
-  username: string;
   description: string;
   quantity: number;
   price: number;

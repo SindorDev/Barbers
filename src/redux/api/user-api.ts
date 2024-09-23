@@ -18,8 +18,14 @@ const UserApi = api.injectEndpoints({
                 body
             }),
             invalidatesTags: ["Barbers"]
+        }),
+        profile: build.query<Response, void>({
+            query: () => ({
+                url: "/auth/profile"
+            }),
+            providesTags: ["Barbers"]
         })
     })
 })
 
-export const { useSignUpUserMutation, useSignInUserMutation } = UserApi;
+export const { useSignUpUserMutation, useSignInUserMutation, useProfileQuery } = UserApi;

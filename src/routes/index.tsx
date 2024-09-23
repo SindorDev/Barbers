@@ -2,9 +2,10 @@ import { useRoutes } from "react-router-dom";
 import { SuspenseElement as Suspense } from "../utils";
 import { lazy } from "react";
 const Home = lazy(() => import("./home/Home"))
-const AuthController = lazy(() => import("./auth/authController"))
+const AuthController = lazy(() => import("./auth/AuthController"))
 import SignIn from "./auth/sign-in/SignIn";
 import SignUp from "./auth/sign-up/SignUp";
+import Profile from "./profile/Profile";
 const RoutesController = () => {
   return useRoutes([
     {
@@ -24,6 +25,10 @@ const RoutesController = () => {
           element: <Suspense> <SignUp/> </Suspense>
         }
       ]
+    },
+    {
+      path: "/profile",
+      element: <Suspense> <Profile/> </Suspense>
     }
   ])
 }
