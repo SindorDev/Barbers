@@ -31,12 +31,11 @@ const SignIn = () => {
       navigate("/")
     }
   }, [data])
-
   
   return (
     <div className='w-full h-screen flex items-center justify-center'>
     <div className='w-full max-w-[500px] bg-[#c4c4c4]  rounded-md p-10'>
-    <h1 className='text-center text-2xl font-bold'>Register</h1>
+    <h1 className='text-center text-2xl font-bold'>Login</h1>
     <Form
     name="basic"
     layout='vertical'
