@@ -17,7 +17,7 @@ type FieldType = {
 
 const SignIn = () => {
 
-  const [signInUser, {isLoading, data}] = useSignInUserMutation()
+  const [signInUser, {isLoading, data, error}] = useSignInUserMutation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
@@ -31,6 +31,14 @@ const SignIn = () => {
       navigate("/")
     }
   }, [data])
+
+  useEffect(() => {
+    if(error) {
+      message.error(data?.message)
+    }
+  }, [error])
+
+
   
   return (
     <div className='w-full h-screen flex items-center justify-center'>

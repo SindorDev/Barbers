@@ -76,3 +76,13 @@ export interface Response {
   id: number;
   thumbnail: string;
 }
+
+
+export type FieldType = {
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  age?: number;
+  avatar?: string;
+  password?: string;
+};
