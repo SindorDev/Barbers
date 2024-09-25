@@ -12,7 +12,7 @@ const SignIn = lazy(() => import("./auth/sign-in/SignIn"));
 const SignUp = lazy(() => import("./auth/sign-up/SignUp"));
 const Protected = lazy(() => import("./protected/Protected"));
 const Profile = lazy(() => import("./profile/Profile"));
-const Order = lazy(() => import("./dashboard/orders/Order"))
+const Service = lazy(() => import("./dashboard/service/Services"))
 const RoutesController = () => {
   const { token } = useSelector((state: any) => state.auth);
   const [role, setRole] = useState(null);
@@ -98,7 +98,7 @@ const RoutesController = () => {
           children: [
             {
               index: true,
-              element: role === "manager" && "owner" ? (
+              element: role === "manager" || role === "owner" ? (
                 <Suspense>
                     <Users/>
                 </Suspense>
@@ -118,7 +118,7 @@ const RoutesController = () => {
               path: "order",
               element: (
                 <Suspense>
-                    <Order/>
+                    <Service/>
                 </Suspense>
               )
             }

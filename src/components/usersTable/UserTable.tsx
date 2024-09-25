@@ -1,7 +1,8 @@
-import { AiOutlineArrowRight } from "react-icons/ai";
+import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AiOutlineArrowLeft } from "react-icons/ai";
+
 import {
+
   Table,
   TableBody,
   TableCaption,
@@ -27,9 +28,7 @@ const UserTable = ({
   data: any;
   getAllUser: any;
 }) => {
-
-  console.log(data);
-
+  
   const [userArchived, { data: archivedData, isSuccess }] =
     useUserArchivedMutation();
   const [

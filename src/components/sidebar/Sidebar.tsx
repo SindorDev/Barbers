@@ -1,8 +1,8 @@
+import { FaServicestack } from "react-icons/fa"; 
 // eslint-disable-next-line react/prop-types, no-unused-vars
-import { TbArmchair } from "react-icons/tb"; 
 import { AiOutlineUser } from "react-icons/ai"; 
 import { Layout, Button,  Modal, Menu } from "antd";
-import { Navigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { LiaDoorOpenSolid } from "react-icons/lia";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -59,12 +59,12 @@ const Sidebar = ({ collapsed } : {collapsed: boolean}) => {
         theme="dark"
         mode="inline"
         defaultSelectedKeys={["1"]}
-        items={ role === "manager" && "owner" ?
+        items={ role === "owner" || role === "manager" ?
           [
             {
               key: "1",
               icon: <AiOutlineUser size={18} />,
-              label: role === "owner" ? <Navigate to={"users"}/> : <NavLink to={""}>Users</NavLink>,
+              label: <NavLink to={""}>Users</NavLink>,
             },
             {
               key: "2",
@@ -73,8 +73,8 @@ const Sidebar = ({ collapsed } : {collapsed: boolean}) => {
             },
             {
               key: "3",
-              icon: <TbArmchair size={18} />,
-              label: <NavLink to={"order"}>Orders</NavLink>,
+              icon: <FaServicestack size={18} /> ,
+              label: <NavLink to={"order"}>Services</NavLink>,
             }
           ]
           : 

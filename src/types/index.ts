@@ -86,4 +86,7 @@ export type FieldType = {
   age?: number;
   avatar?: string;
   password?: string;
+  name: string;
+  price: number;
+  image: string;
 };
