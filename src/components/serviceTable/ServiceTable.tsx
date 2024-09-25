@@ -18,6 +18,7 @@ import CreateService from "../createService/CreateService";
 const ServiceTable = ({data}: {data: any}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [updateService, setUpdateService] = useState([])
   const [deleteOrder, {data: deleteOrderData, isSuccess}] = useDeleteServiceMutation()
   const ITEMS_PER_PAGE = 5;
   const totalPages = Math.ceil(data?.length / ITEMS_PER_PAGE);
@@ -27,6 +28,11 @@ const ServiceTable = ({data}: {data: any}) => {
 
   const handleDelete = (id: string) => {
        deleteOrder(id as any)
+}
+
+const handleUpdate = (data: any) => {
+  setUpdateService(data)
+  setIsModalOpen(true)
 }
 
 useEffect(() => {
@@ -73,7 +79,7 @@ useEffect(() => {
       </TableCell>
       <TableCell>
               <div className="flex items-center gap-5">
-                     <Button className="!bg-yellow-500 active:scale-95" type="primary">
+                     <Button className="!bg-yellow-500 active:scale-95" type="primary" onClick={() => handleUpdate(data)}>
                             <BiMessageSquareEdit size={20} />
                      </Button>
                      <Button className="!bg-red-500 active:scale-95" type="primary" onClick={() => handleDelete(data._id)}>
@@ -112,7 +118,7 @@ useEffect(() => {
 </div>
 </Table>
 
-<CreateService isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+<CreateService isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} updateServices={updateService} setUpdateService={setUpdateService}/>
     </>
   )
 }

@@ -24,7 +24,15 @@ const ServiceApi = api.injectEndpoints({
                }),
                invalidatesTags: ["Barbers"]
            }),
+           updateService: build.mutation<Response, void>({
+               query: ({body, id}: any) => ({
+                   url: `service/${id}`,
+                   method: "PATCH",
+                   body
+               }),
+               invalidatesTags: ["Barbers"]
+           })
        })
 })
 
-export const { useGetServiceQuery, useDeleteServiceMutation, useCreateServiceMutation } = ServiceApi
+export const { useGetServiceQuery, useDeleteServiceMutation, useCreateServiceMutation, useUpdateServiceMutation } = ServiceApi

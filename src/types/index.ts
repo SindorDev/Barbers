@@ -89,4 +89,5 @@ export type FieldType = {
   name: string;
   price: number;
   image: string;
+  _id: string
 };

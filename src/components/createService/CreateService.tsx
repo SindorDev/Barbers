@@ -1,15 +1,18 @@
-import { useCreateServiceMutation } from "@/redux/api/service-api";
+import { useCreateServiceMutation, useUpdateServiceMutation } from "@/redux/api/service-api";
 import { FieldType } from "@/types";
 import type { FormProps } from "antd";
 import { Modal, Button, Form, Input, InputNumber, message } from "antd";
+import { useForm } from "antd/es/form/Form";
 import { useEffect } from "react";
 
-const CreateService = ({ isModalOpen, setIsModalOpen }: any) => {
-
+const CreateService = ({ isModalOpen, setIsModalOpen, updateServices, setUpdateService }: any) => {
+  const [form] = useForm()
   const [createService, {data, isSuccess}] = useCreateServiceMutation()
+  const [updateService , {data: updateData, isSuccess: updateIsSuccess}] = useUpdateServiceMutation()
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setUpdateService([]);
   };
 
   useEffect(() => {
@@ -19,9 +22,23 @@ const CreateService = ({ isModalOpen, setIsModalOpen }: any) => {
        }
   }, [data, isSuccess])
 
+  useEffect(() => {
+    if(updateIsSuccess && updateData) {
+      message.success(updateData.message)
+      setIsModalOpen(false)
+      setUpdateService([])
+    }
+  }, [updateIsSuccess, updateData])
+
+  console.log(updateServices)
+
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
-    createService(values as any)
+    if (updateServices) {
+      console.log("salom")
+      createService(values as any);
+    } else {
+      updateService({ body: values, id: updateServices._id } as any);
+    }
   };
 
   return (
@@ -32,11 +49,10 @@ const CreateService = ({ isModalOpen, setIsModalOpen }: any) => {
         footer={false}
         onCancel={handleCancel}
       >
-        {" "}
         <Form
+          form={form}
           name="Create Service"
           layout="vertical"
-          initialValues={{ remember: true }}
           onFinish={onFinish}
         >
           <Form.Item<FieldType>
