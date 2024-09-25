@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+       background-color: #fff;
+}
+
 * {
        font-family: "Poppins";
 }
@@ -17,4 +21,9 @@
 }
 .ant-modal .ant-modal-header {
        background-color:  transparent !important;
+}
+@layer base {
+  :root {
+              --radius: 0.5rem;
+       }
 }

@@ -11,6 +11,7 @@ export interface IUser {
   last_name: string;
   role: string
   age: number
+  archived: boolean
 }
 export interface IProduct {
   id: number;

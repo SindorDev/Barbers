@@ -1,22 +1,20 @@
-import { BiNotification } from "react-icons/bi"; 
-import { BiCartAlt } from "react-icons/bi"; 
-import { UserOutlined, ProductFilled } from "@ant-design/icons";
+// eslint-disable-next-line react/prop-types, no-unused-vars
+import { TbArmchair } from "react-icons/tb"; 
+import { AiOutlineUser } from "react-icons/ai"; 
 import { Layout, Button,  Modal, Menu } from "antd";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import { LiaDoorOpenSolid } from "react-icons/lia";
-import { FaHeart } from "react-icons/fa";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { signOut } from "../../redux/slices/authSlice";
 const { Sider } = Layout;
 
-// eslint-disable-next-line react/prop-types, no-unused-vars
 const Sidebar = ({ collapsed } : {collapsed: boolean}) => {
   const dispatch = useDispatch()
 
   const {token} = useSelector((state: any) => state.auth)
 
-  const role = JSON.parse(atob(token.split(".")[1]))?.id
-
+  const role = JSON.parse(atob(token.split(".")[1]))?.role
 
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -30,7 +28,7 @@ const Sidebar = ({ collapsed } : {collapsed: boolean}) => {
     setConfirmLoading(true);
     setTimeout(() => {
       setOpen(false);
-      dispatch({type: "SIGN_OUT"})
+      dispatch(signOut())
 
     }, 1500)
   };
@@ -60,55 +58,32 @@ const Sidebar = ({ collapsed } : {collapsed: boolean}) => {
       className="flex-1 w-full min-h-[90%]"
         theme="dark"
         mode="inline"
-        items={role === "manager" && role === "owner" ? 
-
+        defaultSelectedKeys={["1"]}
+        items={ role === "manager" && "owner" ?
           [
             {
               key: "1",
-              icon: <ProductFilled size={24} />,
-              label: <NavLink to={""}>Products</NavLink>,
+              icon: <AiOutlineUser size={18} />,
+              label: role === "owner" ? <Navigate to={"users"}/> : <NavLink to={""}>Users</NavLink>,
             },
             {
               key: "2",
-              icon: <UserOutlined size={24} />,
-              label: <NavLink to={"users"}>Users</NavLink>,
+              icon: <AiOutlineUser size={18} />,
+              label: <NavLink to={"barbers"}>Barbers</NavLink>,
             },
-            
             {
               key: "3",
-              icon: <FaHeart size={17} />,
-              label: <NavLink to={"liked-products"}>LikedProducts</NavLink>,
-            },
-            {
-              key: "4",
-              icon: <BiCartAlt size={20} />,
-              label: <NavLink to={"productCart"}>Cart</NavLink>,
-            },
-            {
-              key: "5",
-              icon: <BiNotification size={20} />,
-              label: <NavLink to={"notifications"}>Notifications</NavLink>,
+              icon: <TbArmchair size={18} />,
+              label: <NavLink to={"order"}>Orders</NavLink>,
             }
           ]
-          :
+          : 
           [
-            
-          {
-            
-            key: "1",
-            icon: <FaHeart size={17} />,
-            label:  <NavLink to={"liked-products"}>LikedProducts</NavLink>,
-          },
-          {
-            key: "2",
-            icon: <BiCartAlt size={20} />,
-            label: <NavLink to={"productCart"}>Cart</NavLink>,
-          },
-          {
-            key: "3",
-            icon: <BiNotification size={20} />,
-            label: <NavLink to={"notifications"}>Notifications</NavLink>,
-          }
+            {
+              key: "2",
+              icon: <AiOutlineUser size={18} />,
+              label: <NavLink to={"barbers"}>Barbers</NavLink>,
+            }
           ]
         }
       />

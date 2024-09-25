@@ -1,26 +1,30 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import { SuspenseElement as Suspense } from "../utils";
-import { lazy } from "react";
+import { lazy, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 const Home = lazy(() => import("./home/Home"));
+const Dashboard = lazy(() => import("./dashboard/Dashboard"));
+const Users = lazy(() => import("./dashboard/users/Users"));
+const Barber = lazy(() => import("./dashboard/barbers/Barber"));
 const Private = lazy(() => import("./private/Private"));
 const AuthController = lazy(() => import("./auth/AuthController"));
 const SignIn = lazy(() => import("./auth/sign-in/SignIn"));
 const SignUp = lazy(() => import("./auth/sign-up/SignUp"));
 const Protected = lazy(() => import("./protected/Protected"));
 const Profile = lazy(() => import("./profile/Profile"));
-import { useSelector } from "react-redux";
-import Dashboard from "./dashboard/Dashboard";
+const Order = lazy(() => import("./dashboard/orders/Order"))
 const RoutesController = () => {
   const { token } = useSelector((state: any) => state.auth);
-  // const [role, setRole] = useState(null);
-  // useEffect(() => {
-  //   if (token) {
-  //     setRole(JSON.parse(atob(token.split(".")[1]))?.id);
-  //   }
-  // }, [token]);
+  const [role, setRole] = useState(null);
+  useEffect(() => {
+    if (token) {
+      setRole(JSON.parse(atob(token.split(".")[1]))?.role);
+    }
+  }, [token]);
 
   return useRoutes([
     {
+
       path: "/",
       element: (
         <Suspense>
@@ -92,11 +96,33 @@ const RoutesController = () => {
             </Suspense>
           ),
           children: [
-            // {
-            //   index: true,
-            //   path: "",
-            //   element: role === "admin" ? <Suspense> </> </Suspense> : <Navigate to="/dashboard/liked-products"/>
-            // },
+            {
+              index: true,
+              element: role === "manager" && "owner" ? (
+                <Suspense>
+                    <Users/>
+                </Suspense>
+              ) : (
+                <Navigate to={"/dashboard/barbers"} />
+              )
+            },
+            {
+              path: "barbers",
+              element: (
+                <Suspense>
+                    <Barber/>
+                </Suspense>
+              )
+            },
+            {
+              path: "order",
+              element: (
+                <Suspense>
+                    <Order/>
+                </Suspense>
+              )
+            }
+
           ],
         },
       ],
