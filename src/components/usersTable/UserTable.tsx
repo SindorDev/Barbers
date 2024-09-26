@@ -14,6 +14,7 @@ import {
 import { IUser } from "@/types";
 import { Button, message, Select } from "antd";
 import {
+  useProfileQuery,
   useUserArchivedMutation,
   useUserRoleUpdateMutation,
   useUserUnArchivedMutation,
@@ -38,6 +39,11 @@ const UserTable = ({
   const [userRoleUpdate, { data: roleUpdateData, isSuccess: isSuccessRole }] =
     useUserRoleUpdateMutation();
 
+  const {data: profile} = useProfileQuery()
+
+  const filterData = data?.filter((item: IUser) => item._id !== profile?.payload?._id)
+
+
   const [userGet, setUserGet] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [useRole, setUseRole] = useState("user");
@@ -46,7 +52,7 @@ const UserTable = ({
   const totalPages = Math.ceil(data?.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = data?.slice(startIndex, endIndex);
+  const currentData = filterData?.slice(startIndex, endIndex);
 
   const handleArchived = (data: IUser) => {
     if (data?.archived) {
@@ -109,6 +115,7 @@ const UserTable = ({
         </TabsList>
         <TabsContent value={userGet}>
           <Table className="w-full text-emerald-900">
+
             <TableCaption>A list of Users</TableCaption>
             <TableHeader></TableHeader>
             <TableHeader>

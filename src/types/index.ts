@@ -76,6 +76,7 @@ export interface Response {
   postId: number;
   id: number;
   thumbnail: string;
+  role: string;
 }
 
 

@@ -85,7 +85,7 @@ const RoutesController = () => {
           <Private />
         </Suspense>
       ) : (
-        <Navigate to={"/auth"} />
+        <Navigate to={"/"} />
       ),
       children: [
         {
