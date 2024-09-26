@@ -13,12 +13,24 @@ const CreateService = ({ isModalOpen, setIsModalOpen, updateServices, setUpdateS
   const handleCancel = () => {
     setIsModalOpen(false);
     setUpdateService([]);
+    form.resetFields();
   };
+
+  
+  useEffect(() => {
+    if (updateServices) {
+      form.setFieldsValue({...updateServices});
+    } else {
+      form.resetFields();
+    }
+  }, [updateServices, form])
+
 
   useEffect(() => {
        if(isSuccess && data){
          setIsModalOpen(false)
          message.success(data.message)
+         form.resetFields()
        }
   }, [data, isSuccess])
 
@@ -27,31 +39,30 @@ const CreateService = ({ isModalOpen, setIsModalOpen, updateServices, setUpdateS
       message.success(updateData.message)
       setIsModalOpen(false)
       setUpdateService([])
+      form.resetFields()
     }
   }, [updateIsSuccess, updateData])
 
-  console.log(updateServices)
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    if (updateServices) {
-      console.log("salom")
-      createService(values as any);
-    } else {
+    if (updateServices._id) {
       updateService({ body: values, id: updateServices._id } as any);
+    } else {
+      createService(values as any);
     }
   };
 
   return (
     <>
       <Modal
-        title="Create Service"
+        title={updateServices._id ? "Update Service" : "Create Service"}
         open={isModalOpen}
         footer={false}
+        forceRender
         onCancel={handleCancel}
       >
         <Form
-          form={form}
-          name="Create Service"
+          form={form}  
           layout="vertical"
           onFinish={onFinish}
         >
@@ -82,7 +93,7 @@ const CreateService = ({ isModalOpen, setIsModalOpen, updateServices, setUpdateS
 
           <Form.Item wrapperCol={{ span: 24 }}>
             <Button type="primary" className="w-full py-5" htmlType="submit">
-              Submit
+              {updateServices._id ? "Update" : "Create"}
             </Button>
           </Form.Item>
         </Form>

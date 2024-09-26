@@ -27,6 +27,7 @@ const ServiceApi = api.injectEndpoints({
            updateService: build.mutation<Response, void>({
                query: ({body, id}: any) => ({
                    url: `service/${id}`,
+                   
                    method: "PATCH",
                    body
                }),
