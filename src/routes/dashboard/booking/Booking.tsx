@@ -1,4 +1,4 @@
-import BookingTable from "@/components/bookingTable/bookingTable"
+import BookingTable from "@/components/bookingTable/BookingTable"
 import { useGetBookingQuery } from "@/redux/api/booking-api"
 
 const Booking = () => {
