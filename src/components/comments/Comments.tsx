@@ -1,8 +1,8 @@
-import { useGetBarbersQuery } from "../../redux/api/barber-api"
+import { useGetServiceQuery } from "@/redux/api/service-api"
 import { Container } from "../../utils"
 
 const Comments = () => {
-       const {data} = useGetBarbersQuery()
+       const {data} = useGetServiceQuery()
   return (
        <section className="bg-[#9D9570]">
               <Container>

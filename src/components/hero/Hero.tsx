@@ -1,11 +1,9 @@
 import { AiTwotonePhone } from "react-icons/ai";
 import { GoLocation } from "react-icons/go";
-import { useGetBarbersQuery } from "../../redux/api/barber-api";
 
 import { Container } from "../../utils";
 import { useGetServiceQuery } from "@/redux/api/service-api";
 const Hero = () => {
-  const { data } = useGetBarbersQuery();
   const { data: serviceData } = useGetServiceQuery();
 
   console.log(serviceData);

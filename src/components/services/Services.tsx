@@ -2,11 +2,11 @@ import { RiScissorsCutLine } from "react-icons/ri";
 import { GiBeard } from "react-icons/gi"; 
 import { TbBlade } from "react-icons/tb"; 
 import { IoIosCut } from "react-icons/io"; 
-import { useGetBarbersQuery } from "../../redux/api/barber-api"
 import { Container } from "../../utils"
+import { useGetServiceQuery } from "@/redux/api/service-api";
 
 const Services = () => {
-       const {data} = useGetBarbersQuery()
+       const {data} = useGetServiceQuery()
   return (
        <section className="bg-[#292D33] py-[80px]">
               <Container>
