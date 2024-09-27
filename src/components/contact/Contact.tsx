@@ -8,7 +8,7 @@ const Contact = () => {
       <Container>
         <div className="flex w-full">
           <div className="w-full min-h-full bg-black">
-            <img src={data?.products[0].thumbnail} className="w-full h-full object-contain" alt={data?.products[0].title} />
+            <img src={data?.payload[2].image} className="w-full h-full object-contain" alt={data?.payload[2].name} />
           </div>
           <div className="w-full p-10 min-h-full bg-[#cec392]">
             <h2 className="text-[80px] text-white font-extrabold">Contact Us!</h2>

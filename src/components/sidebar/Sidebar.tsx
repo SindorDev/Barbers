@@ -1,9 +1,11 @@
-import { FaServicestack } from "react-icons/fa"; 
 // eslint-disable-next-line react/prop-types, no-unused-vars
+import { TbBrandBooking, TbReportSearch } from "react-icons/tb"; 
+import { FaServicestack } from "react-icons/fa"; 
 import { AiOutlineUser } from "react-icons/ai"; 
+import { LiaDoorOpenSolid } from "react-icons/lia";
+
 import { Layout, Button,  Modal, Menu } from "antd";
 import { NavLink } from "react-router-dom";
-import { LiaDoorOpenSolid } from "react-icons/lia";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../redux/slices/authSlice";
@@ -75,6 +77,16 @@ const Sidebar = ({ collapsed } : {collapsed: boolean}) => {
               key: "3",
               icon: <FaServicestack size={18} /> ,
               label: <NavLink to={"order"}>Services</NavLink>,
+            },
+            {
+              key: "4",
+              icon: <TbBrandBooking size={22} /> ,
+              label: <NavLink to={"booking"}>Booking</NavLink>,
+            },
+            {
+              key: "5",
+              icon: <TbReportSearch size={22} /> ,
+              label: <NavLink to={"reports"}>Reports</NavLink>,
             }
           ]
           : 
@@ -83,6 +95,12 @@ const Sidebar = ({ collapsed } : {collapsed: boolean}) => {
               key: "2",
               icon: <AiOutlineUser size={18} />,
               label: <NavLink to={"barbers"}>Barbers</NavLink>,
+            },
+            
+            {
+              key: "5",
+              icon: <TbReportSearch size={22} /> ,
+              label: <NavLink to={"reports"}>Reports</NavLink>,
             }
           ]
         }

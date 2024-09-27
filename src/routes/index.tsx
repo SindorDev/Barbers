@@ -2,6 +2,7 @@ import { Navigate, useRoutes } from "react-router-dom";
 import { SuspenseElement as Suspense } from "../utils";
 import { lazy, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+
 const Home = lazy(() => import("./home/Home"));
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Users = lazy(() => import("./dashboard/users/Users"));
@@ -13,6 +14,9 @@ const SignUp = lazy(() => import("./auth/sign-up/SignUp"));
 const Protected = lazy(() => import("./protected/Protected"));
 const Profile = lazy(() => import("./profile/Profile"));
 const Service = lazy(() => import("./dashboard/service/Services"))
+const Booking = lazy(() => import("./dashboard/booking/Booking"))
+const Reports = lazy(() => import("./dashboard/reports/Reports"))
+
 const RoutesController = () => {
   const { token } = useSelector((state: any) => state.auth);
   const [role, setRole] = useState(null);
@@ -121,8 +125,23 @@ const RoutesController = () => {
                     <Service/>
                 </Suspense>
               )
+            },
+            {
+              path: "booking",
+              element: (
+                <Suspense>
+                    <Booking/>
+                </Suspense>
+              )
+            },
+            {
+              path: "reports",
+              element: (
+                  <Suspense>
+                      <Reports/>
+                  </Suspense>
+               )
             }
-
           ],
         },
       ],

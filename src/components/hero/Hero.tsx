@@ -1,71 +1,74 @@
-import { AiTwotonePhone } from "react-icons/ai"; 
-import { GoLocation } from "react-icons/go"; 
-import { useGetBarbersQuery } from "../../redux/api/barber-api"
+import { AiTwotonePhone } from "react-icons/ai";
+import { GoLocation } from "react-icons/go";
+import { useGetBarbersQuery } from "../../redux/api/barber-api";
 
-import category from "../../assets/icons/cateogry.svg"
 import { Container } from "../../utils";
+import { useGetServiceQuery } from "@/redux/api/service-api";
 const Hero = () => {
-       const {data} = useGetBarbersQuery()
+  const { data } = useGetBarbersQuery();
+  const { data: serviceData } = useGetServiceQuery();
+
+  console.log(serviceData);
 
   return (
-       <section className="my-[53px]">
+    <section className="my-[53px]">
       <Container>
-      <div className="flex items-center gap-5">
-                     <div>
-                            <h3 className="uppercase text-[42px] leading-[64px] font-medium title text-black">Welcome To</h3>    
-                            <h1 className="max-w-[490px] capitalize text-[65px] leading-[96px] font-bold">Barbershop in Manhattan NEW YORK</h1>
-                            <div className="flex flex-col gap-5 items-start">
-                            <span className="flex items-center gap-4 text-[23px] leading-[34px] font-normal">
-                                   <GoLocation size={26} />
-                                   ​254 W 27ST ST, NEW YORK, NY 10011
-                            </span>
-                            <span className="flex items-center gap-4 text-[23px] leading-[34px] font-normal">
-                                   <AiTwotonePhone size={26} />
-                                   ​(212) 123-4567
-                            </span>
-                            <span className="flex items-center gap-4 text-[23px] leading-[34px] font-normal">
-                                   <GoLocation size={26} />
-                                   ​254 W 27ST ST, NEW YORK, NY 10011
-                            </span>
-                            <span className="flex items-center gap-4 text-[23px] leading-[34px] font-normal">
-                                   <AiTwotonePhone size={26} />
-                                   ​(212) 123-4567
-                            </span>
-                            </div>
-                            <button className="py-5 px-9 mt-[45px] border rounded-[20px] border-black text-[30px] font-semibold leading-[45px]">Book Online</button>
-                     </div>
-                     <div className="w-full max-w-[680px] rounded-2xl border border-black flex items-center justify-center">
-                     <img src={data?.products[0].thumbnail} className="w-full object-contain" alt={data?.products[0].title} />
-                     </div>
+        <div className="flex items-center gap-5">
+          <div>
+            <h3 className="uppercase text-[42px] leading-[64px] font-medium title text-black">
+              Welcome To
+            </h3>
+            <h1 className="max-w-[490px] capitalize text-[65px] leading-[96px] font-bold">
+              Barbershop in Manhattan NEW YORK
+            </h1>
+            <div className="flex flex-col gap-5 items-start">
+              <span className="flex items-center gap-4 text-[23px] leading-[34px] font-normal">
+                <GoLocation size={26} />
+                ​254 W 27ST ST, NEW YORK, NY 10011
+              </span>
+              <span className="flex items-center gap-4 text-[23px] leading-[34px] font-normal">
+                <AiTwotonePhone size={26} />
+                ​(212) 123-4567
+              </span>
+              <span className="flex items-center gap-4 text-[23px] leading-[34px] font-normal">
+                <GoLocation size={26} />
+                ​254 W 27ST ST, NEW YORK, NY 10011
+              </span>
+              <span className="flex items-center gap-4 text-[23px] leading-[34px] font-normal">
+                <AiTwotonePhone size={26} />
+                ​(212) 123-4567
+              </span>
+            </div>
+            <button className="py-5 px-9 mt-[45px] border rounded-[20px] border-black text-[30px] font-semibold leading-[45px]">
+              Book Online
+            </button>
+          </div>
+          <div className="w-full max-w-[680px] p-2 rounded-2xl border border-black flex items-center justify-center">
+            <img
+              src={serviceData?.payload[2]?.image}
+              className="w-full rounded-lgw object-contain"
+              alt={serviceData?.payload[2]?.name}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-4 gap-5 mt-[100px] items-center justify-between">
+        { serviceData?.payload && serviceData.payload.map((service: any) => (
+            <div className="flex items-center flex-col gap-5">
+              <div className="w-[200px] rounded-sm overflow-hidden bg-slate-200 p-2 h-[150px]">
+              <img src={service.image} className="object-contain w-full h-full"  alt="category" />
               </div>
-              <div className="flex mt-[100px] items-center justify-between">
-                     <div className="flex items-center flex-col gap-5">
-                            <img src={category} alt="category" />
-                            <h3 className="text-[27px] leading-[41px] font-normal title">Regular Haircut</h3>
-                            <button className="py-4 px-14 bg-black rounded-[21px] text-white title uppercase underline text-[34px] leading-[51px] font-normal">more</button>
-                     </div>
-                     
-                     <div className="flex items-center flex-col gap-5">
-                            <img src={category} alt="category" />
-                            <h3 className="text-[27px] leading-[41px] font-normal title">Regular Haircut</h3>
-                            <button className="py-4 px-14 bg-black rounded-[21px] text-white title uppercase underline text-[34px] leading-[51px] font-normal">more</button>
-                     </div>
-                     
-                     <div className="flex items-center flex-col gap-5">
-                            <img src={category} alt="category" />
-                            <h3 className="text-[27px] leading-[41px] font-normal title">Regular Haircut</h3>
-                            <button className="py-4 px-14 bg-black rounded-[21px] text-white title uppercase underline text-[34px] leading-[51px] font-normal">more</button>
-                     </div>
-                     
-                     <div className="flex items-center flex-col gap-5">
-                            <img src={category} alt="category" />
-                            <h3 className="text-[27px] leading-[41px] font-normal title">Regular Haircut</h3>
-                            <button className="py-4 px-14 bg-black rounded-[21px] text-white title uppercase underline text-[34px] leading-[51px] font-normal">more</button>
-                     </div>
-              </div>
+              <h3 className="text-[27px] leading-[41px] font-normal title">
+                {service.name}
+              </h3>
+              <button className="py-4 px-14 bg-black rounded-[21px] text-white title uppercase underline text-[34px] leading-[51px] font-normal">
+                more
+              </button>
+            </div>
+          ))}
+        </div>
       </Container>
-       </section>
-  )
-}
+    </section>
+  );
+};
 
-export default Hero
+export default Hero;

@@ -1,4 +1,5 @@
 export interface IUser {
+  [x: string]: any;
   _id: number;
   username: string;
   email: string;
@@ -87,8 +88,15 @@ export type FieldType = {
   age?: number;
   avatar?: string;
   password?: string;
-  name: string;
-  price: number;
-  image: string;
-  _id: string
+  name?: string;
+  price?: number;
+  image?: string;
+  _id?: string;
+  rating: string;
+  start: string;
+  end: string;
+  service: string;
+  barber: string;
+  client: string;
+  date: string
 };

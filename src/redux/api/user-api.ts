@@ -23,7 +23,7 @@ const UserApi = api.injectEndpoints({
       invalidatesTags: ["Barbers"],
     }),
 
-    signUpUser: build.mutation<Response, void>({
+     signUpUser: build.mutation<Response, void>({
       query: (body) => ({
         url: "/auth/sign-up",
         method: "POST",

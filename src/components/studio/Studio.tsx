@@ -9,7 +9,7 @@ const Studio = () => {
               <Container>
                      <div className="py-[60px] flex relative">
                             <div className="w-full max-w-[680px] min-h-[666px] flex items-center justify-center rounded-full overflow-hidden shadow-cm">
-                                   <img src={data?.products[0].thumbnail} alt={data?.products[0].title} />
+                                   <img src={data?.payload[0]?.image} alt={data?.payload[0]?.title} />
                             </div>
 
                             <div className="p-5 bg-[#D9D9D9] absolute bottom-[20px] left-[500px] rounded-lg w-full max-w-[700px]">

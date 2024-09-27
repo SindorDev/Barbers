@@ -54,6 +54,7 @@ const UserTable = ({
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentData = filterData?.slice(startIndex, endIndex);
 
+  
   const handleArchived = (data: IUser) => {
     if (data?.archived) {
       userUnArchived(data?._id);
