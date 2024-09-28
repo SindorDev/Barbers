@@ -13,8 +13,6 @@ const Navbar = () => {
   const dispatch = useDispatch()
   const {data} = useProfileQuery()
 
-  console.log(data);
-
   return (
     <nav className="py-5">
       <Container>

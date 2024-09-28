@@ -6,7 +6,6 @@ import { useGetServiceQuery } from "@/redux/api/service-api";
 const Hero = () => {
   const { data: serviceData } = useGetServiceQuery();
 
-  console.log(serviceData);
 
   return (
     <section className="my-[53px]">

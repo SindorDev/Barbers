@@ -16,7 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDeleteBookingMutation } from "@/redux/api/booking-api";
 import BookingModal from "../bookingModal/BookingModal";
-const BookingTable = ({ data }: { data: any }) => {
+const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, createBooking: any, setCreateBooking: any }) => {
   
   const [deleteBooking, {data: deleteBookingData, isSuccess}] = useDeleteBookingMutation()
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,7 +118,7 @@ const BookingTable = ({ data }: { data: any }) => {
         </div>
       </Table>
       
-      <BookingModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+      <BookingModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} createBooking={createBooking} setCreateBooking={setCreateBooking}/>
     </>
   );
 };

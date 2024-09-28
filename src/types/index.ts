@@ -99,4 +99,5 @@ export type FieldType = {
   barber: string;
   client: string;
   date: string
+  comment?: string;
 };

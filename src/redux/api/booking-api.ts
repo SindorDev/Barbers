@@ -9,7 +9,7 @@ const BookingApi = api.injectEndpoints({
       }),
       providesTags: ["Barbers"],
     }),
-    createBooking: build.mutation<Response, void>({
+    createBookings: build.mutation<Response, void>({
       query: (body) => ({
         url: "booking",
         method: "POST",
@@ -27,4 +27,4 @@ const BookingApi = api.injectEndpoints({
   }),
 });
 
-export const { useGetBookingQuery, useCreateBookingMutation, useDeleteBookingMutation } = BookingApi
+export const { useGetBookingQuery, useCreateBookingsMutation, useDeleteBookingMutation } = BookingApi
