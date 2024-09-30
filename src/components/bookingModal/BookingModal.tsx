@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { useCreateBookingsMutation } from "@/redux/api/booking-api";
 import { useGetServiceQuery } from "@/redux/api/service-api";
 import { useGetBarberQuery } from "@/redux/api/user-api";
@@ -48,11 +48,11 @@ const BookingModal: React.FC<BookingModalProps> = ({
     setCreateBooking({ ...createBooking, date: dateString });
   };
 
-  const onTimeChange:TimePickerProps["onChange"] = (_, timeString) => {
+  const onTimeChange: TimePickerProps["onChange"] = (_, timeString) => {
     setCreateBooking({ ...createBooking, start: timeString });
   };
 
-  const onTimeChangeEnd:TimePickerProps["onChange"] = (_, timeString) => {
+  const onTimeChangeEnd: TimePickerProps["onChange"] = (_, timeString) => {
     setCreateBooking({ ...createBooking, end: timeString });
   };
 
@@ -66,8 +66,6 @@ const BookingModal: React.FC<BookingModalProps> = ({
       message.success(bookingData.message);
     }
   }, [bookingData, isSuccess, setIsModalOpen]);
-
-  console.log(createBooking);
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -108,9 +106,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
             label="Service"
             name="service"
             className="w-full"
-            rules={[
-              { required: true, message: "Please input your Service!" },
-            ]}
+            rules={[{ required: true, message: "Please input your Service!" }]}
           >
             <Select mode="multiple">
               {data?.payload?.map((item: any) => (
@@ -130,32 +126,25 @@ const BookingModal: React.FC<BookingModalProps> = ({
           >
             <DatePicker maxTagCount="responsive" onChange={onChange} />
           </Form.Item>
+          
+          <div className="flex flex-col w-full gap-2">
+            <label htmlFor="">Start Time</label>
+          <TimePicker
+            defaultValue={dayjs("12:00", format)}
+            onChange={onTimeChange}
+            format={format}
+          />
+          </div>
 
-          <Form.Item<FieldType>
-            label="Start Time"
-            name="start"
-            className="w-full"
-            rules={[{ required: true, message: "Please input your Start!" }]}
-          >
-            <TimePicker
-              defaultValue={dayjs("12:00", format)}
-              onChange={onTimeChange}
-              format={format}
-            />
-          </Form.Item>
+          <div className="flex flex-col w-full gap-2">
+            <label htmlFor="">End Time</label>
 
-          <Form.Item<FieldType>
-            label="End Time"
-            name="end"
-            className="w-full"
-            rules={[{ required: true, message: "Please input your End!" }]}
-          >
             <TimePicker
               defaultValue={dayjs("12:00", format)}
               onChange={onTimeChangeEnd}
               format={format}
             />
-          </Form.Item>
+          </div>
         </div>
 
         <div className="flex gap-5">
@@ -191,7 +180,12 @@ const BookingModal: React.FC<BookingModalProps> = ({
           />
         </Form.Item>
 
-        <Button type="primary" onClick={handleSend} className="w-full py-6" htmlType="submit">
+        <Button
+          type="primary"
+          onClick={handleSend}
+          className="w-full py-6"
+          htmlType="submit"
+        >
           Create Booking
         </Button>
       </Form>
