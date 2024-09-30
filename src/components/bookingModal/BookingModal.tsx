@@ -4,7 +4,6 @@ import { useGetServiceQuery } from "@/redux/api/service-api";
 import { useGetBarberQuery } from "@/redux/api/user-api";
 import { FieldType } from "@/types";
 import type { DatePickerProps, TimePickerProps } from "antd";
-import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import {
   Modal,
