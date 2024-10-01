@@ -92,13 +92,19 @@ const Sidebar = ({ collapsed } : {collapsed: boolean}) => {
           : 
           [
             {
-              key: "2",
+              key: "1",
               icon: <AiOutlineUser size={18} />,
               label: <NavLink to={"barbers"}>Barbers</NavLink>,
             },
             
             {
-              key: "5",
+              key: "2",
+              icon: <TbBrandBooking size={22} /> ,
+              label: <NavLink to={"booking"}>Booking</NavLink>,
+            },
+            
+            {
+              key: "3",
               icon: <TbReportSearch size={22} /> ,
               label: <NavLink to={"reports"}>Reports</NavLink>,
             }

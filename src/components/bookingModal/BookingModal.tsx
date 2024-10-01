@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCreateBookingsMutation } from "@/redux/api/booking-api";
+import { useCreateBookingsMutation, useUpdateBookingsMutation } from "@/redux/api/booking-api";
 import { useGetServiceQuery } from "@/redux/api/service-api";
 import { useGetBarberQuery } from "@/redux/api/user-api";
 import { FieldType } from "@/types";
@@ -23,6 +23,8 @@ interface BookingModalProps {
   setIsModalOpen: (isOpen: boolean) => void;
   createBooking: any;
   setCreateBooking: (booking: any) => void;
+  updateBooking: any;
+  setUpdateBooking: any;
 }
 
 const BookingModal: React.FC<BookingModalProps> = ({
@@ -30,6 +32,8 @@ const BookingModal: React.FC<BookingModalProps> = ({
   setIsModalOpen,
   createBooking,
   setCreateBooking,
+  updateBooking,
+  setUpdateBooking,
 }) => {
   const [form] = useForm();
 
@@ -39,46 +43,109 @@ const BookingModal: React.FC<BookingModalProps> = ({
   const [createBookings, { data: bookingData, isSuccess }] =
     useCreateBookingsMutation();
 
+  const [updateBookings, {data: updateBookingsData, isSuccess: updateIsSuccess}] = useUpdateBookingsMutation()
+
+  const formatFormValues = (values: any) => {
+    const formattedValues = { ...values };
+    if (values.date) {
+      formattedValues.date = values.date.format("YYYY-MM-DD");
+    }
+    if (values.start) {
+      formattedValues.start = values.start.format(format);
+    }
+    if (values.end) {
+      formattedValues.end = values.end.format(format);
+    }
+    return formattedValues;
+  };
+
+  console.log(updateBookingsData);
+
   const onFinish = () => {
     const values = form.getFieldsValue();
-    setCreateBooking({ ...createBooking, ...values });
+    const formattedValues = formatFormValues(values);
+    setCreateBooking({ ...createBooking, ...formattedValues });
   };
 
-  const onChange: DatePickerProps["onChange"] = (_, dateString) => {
-    setCreateBooking({ ...createBooking, date: dateString });
+  const onChange: DatePickerProps["onChange"] = (date) => {
+    if (date) {
+      setCreateBooking({ ...createBooking, date: date.format("YYYY-MM-DD") });
+    }
   };
 
-  const onTimeChange: TimePickerProps["onChange"] = (_, timeString) => {
-    setCreateBooking({ ...createBooking, start: timeString });
+  const onTimeChange: TimePickerProps["onChange"] = (time) => {
+    if (time) {
+      setCreateBooking({ ...createBooking, start: time.format(format) });
+    }
   };
 
-  const onTimeChangeEnd: TimePickerProps["onChange"] = (_, timeString) => {
-    setCreateBooking({ ...createBooking, end: timeString });
+  const onTimeChangeEnd: TimePickerProps["onChange"] = (time) => {
+    if (time) {
+      setCreateBooking({ ...createBooking, end: time.format(format) });
+    }
   };
+
 
   const handleSend = () => {
-    createBookings(createBooking);
+    const values = form.getFieldsValue();
+    const formattedValues = formatFormValues(values);
+    if (createBooking.edit) {
+      updateBookings({body: formattedValues, id: updateBooking?._id})
+    }
+    else {
+      createBookings(formattedValues);
+    }
   };
 
   useEffect(() => {
     if (isSuccess && bookingData) {
       setIsModalOpen(false);
       message.success(bookingData.message);
+      setCreateBooking({});
+      form.resetFields();
     }
   }, [bookingData, isSuccess, setIsModalOpen]);
 
+  useEffect(() => {
+    if(updateIsSuccess && updateBookingsData) {
+      message.success(updateBookingsData.message)
+      setCreateBooking({})
+      setUpdateBooking({})
+      form.resetFields()
+      setIsModalOpen(false)
+    }
+  }, [updateBookingsData, updateIsSuccess])
+
+  useEffect(() => {
+    if (updateBooking && Object.keys(updateBooking).length > 0) {
+      form.setFieldsValue({
+        barber: updateBooking.barber?._id,
+        service: updateBooking.service?.map((s: any) => s._id),
+        date: updateBooking.date ? dayjs(updateBooking.date) : null,
+        start: updateBooking.start ? dayjs(updateBooking.start, format) : null,
+        end: updateBooking.end ? dayjs(updateBooking.end, format) : null,
+        price: updateBooking.price,
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [updateBooking, form]);
+
   const handleCancel = () => {
     setIsModalOpen(false);
+    setCreateBooking({});
+    setUpdateBooking({});
+    form.resetFields();
   };
 
   return (
     <Modal
-      title="Create Booking"
+      title={createBooking.edit ? "Update Booking" : "Create Booking"}
       className="!w-[700px]"
       footer={false}
       open={isModalOpen}
       onCancel={handleCancel}
-      forceRender={true}
+      forceRender
     >
       <Form
         form={form}
@@ -119,65 +186,34 @@ const BookingModal: React.FC<BookingModalProps> = ({
         </div>
 
         <div className="flex gap-5">
-          <Form.Item<FieldType>
-            label="Date"
-            className="w-full"
-            rules={[{ required: true, message: "Please input your Date!" }]}
-          >
-            <DatePicker maxTagCount="responsive" onChange={onChange} />
+          <Form.Item name="date" label="Date" className="w-full">
+            <DatePicker className="w-full" onChange={onChange} />
           </Form.Item>
-          
-          <div className="flex flex-col w-full gap-2">
-            <label htmlFor="">Start Time</label>
-          <TimePicker
-            defaultValue={dayjs("12:00", format)}
-            onChange={onTimeChange}
-            format={format}
-          />
-          </div>
 
-          <div className="flex flex-col w-full gap-2">
-            <label htmlFor="">End Time</label>
-
+          <Form.Item name="start" label="Start Time" className="w-full">
             <TimePicker
-              defaultValue={dayjs("12:00", format)}
+              className="w-full"
+              onChange={onTimeChange}
+              format={format}
+            />
+          </Form.Item>
+
+          <Form.Item name="end" label="End Time" className="w-full">
+            <TimePicker
+              className="w-full"
               onChange={onTimeChangeEnd}
               format={format}
             />
-          </div>
-        </div>
-
-        <div className="flex gap-5">
-          <Form.Item<FieldType>
-            label="Price"
-            name="price"
-            className="w-full"
-            rules={[{ required: true, message: "Please input your Price!" }]}
-          >
-            <InputNumber className="w-full" />
-          </Form.Item>
-
-          <Form.Item<FieldType>
-            label="Rating"
-            name="rating"
-            className="w-full"
-            rules={[{ required: true, message: "Please input your Rating!" }]}
-          >
-            <Input />
           </Form.Item>
         </div>
 
         <Form.Item<FieldType>
-          label="Comment"
-          name="comment"
+          label="Price"
+          name="price"
           className="w-full"
-          rules={[{ required: true, message: "Please input your Comment!" }]}
+          rules={[{ required: true, message: "Please input your Price!" }]}
         >
-          <Input.TextArea
-            rows={4}
-            placeholder="Comment"
-            className="w-full resize-none"
-          />
+          <InputNumber className="w-full" />
         </Form.Item>
 
         <Button
@@ -186,7 +222,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
           className="w-full py-6"
           htmlType="submit"
         >
-          Create Booking
+          {createBooking.edit ? "Update Booking" : "Create Booking"}
         </Button>
       </Form>
     </Modal>

@@ -103,6 +103,7 @@ const UserTable = ({
   return (
     <>
       <Tabs defaultValue="all" className="w-full">
+        
         <TabsList>
           <TabsTrigger value="all" onClick={() => setUserGet("all")}>
             All

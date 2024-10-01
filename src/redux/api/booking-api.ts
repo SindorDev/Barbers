@@ -19,20 +19,28 @@ const BookingApi = api.injectEndpoints({
     }),
     deleteBooking: build.mutation<Response, void>({
       query: (id) => ({
-        url: `booking/${id}`,
-        method: "DELETE",
+        url: `booking/delete/${id}`,
+        method: "PATCH",
       }),
       invalidatesTags: ["Barbers"],
     }),
 
-    updateBooking: build.mutation<Response, any>({
+    updateBookings: build.mutation<Response, any>({
       query: ({body, id}) => ({
         url: `booking/${id}`,
         method: "PATCH",
         body
-      }) 
+      }),
+      invalidatesTags: ["Barbers"]
+    }),
+    checkBooking: build.mutation<Response, void>({
+      query: (id) => ({
+        url: `booking/complete/${id}`,
+        method: "PATCH"
+      }),
+      invalidatesTags: ["Barbers"]
     })
   })
 });
 
-export const { useGetBookingQuery, useCreateBookingsMutation, useDeleteBookingMutation, useUpdateBookingMutation } = BookingApi
+export const { useGetBookingQuery, useCreateBookingsMutation, useDeleteBookingMutation, useUpdateBookingsMutation, useCheckBookingMutation } = BookingApi

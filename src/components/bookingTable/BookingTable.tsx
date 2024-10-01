@@ -1,3 +1,6 @@
+import { AiOutlineCheck } from "react-icons/ai"; 
+import { FiEdit } from "react-icons/fi"; 
+import { MdCancel } from "react-icons/md"; 
 import {
   AiOutlineArrowLeft,
   AiOutlineArrowRight,
@@ -14,13 +17,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { useDeleteBookingMutation } from "@/redux/api/booking-api";
+import { useCheckBookingMutation, useDeleteBookingMutation } from "@/redux/api/booking-api";
 import BookingModal from "../bookingModal/BookingModal";
 const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, createBooking: any, setCreateBooking: any }) => {
   
   const [deleteBooking, {data: deleteBookingData, isSuccess}] = useDeleteBookingMutation()
+  const [checkBooking, {data: checkBookingData, isSuccess: checkIsSuccess}] = useCheckBookingMutation()
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [updateBooking, setUpdateBooking] = useState([])
   const ITEMS_PER_PAGE = 5;
   const totalPages = Math.ceil(data?.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -31,6 +37,17 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
     deleteBooking(id as any);
   }    
 
+  const handleCheck = (id: string) => {
+    checkBooking(id as any)
+  }
+
+  const handleUpdate = (data: any) => {
+    setUpdateBooking(data)
+    setIsModalOpen(true) 
+    setCreateBooking({...data, edit: true})
+  }
+
+
   useEffect(() => {
        if(isSuccess && deleteBookingData){
               message.success(deleteBookingData?.message)
@@ -38,10 +55,18 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
   }, [deleteBookingData, isSuccess])
 
 
+  useEffect(() => {
+    if(checkBookingData && checkIsSuccess) {
+      message.success(checkBookingData?.message)
+    }
+  }, [checkBookingData, checkIsSuccess])
+
+
   return (
 
     <>
       <Table className="w-full text-emerald-900">
+
         <TableCaption>A list of Users</TableCaption>
         <TableHeader className="w-full">
           <div>
@@ -65,13 +90,13 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
         </TableHeader>
         <TableBody>
           {currentData?.map((data: any) => (
-            <TableRow key={data._id}>
+            <TableRow className={data.status === "canceled" ? "opacity-30" : ""} key={data._id}>
               <TableCell className="font-medium">
                 {data.barber.first_name}
               </TableCell>
               <TableCell>{data.client.first_name}</TableCell>
-              <TableCell>
-                {data.service.map((service: any) => service.name)}
+              <TableCell className="flex items-center gap-5">
+                {data.service.map((service: any) => <span>{service.name}</span>)}
               </TableCell>
               <TableCell>{data.date}</TableCell>
               <TableCell className="text-start">
@@ -80,13 +105,32 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
               <TableCell>${data.price}</TableCell>
               <TableCell>{data.comment}</TableCell>
               <TableCell>{data.status}</TableCell>
-              <TableCell>
+              <TableCell className="flex items-center gap-5">
+                
+              <Button
+                  disabled={data.status === "canceled"}
+                  className="!bg-yellow-500 active:scale-95"
+                  type="primary"
+                  onClick={() => handleUpdate(data)}
+                >
+                  <FiEdit size={20} />
+                </Button>
                 <Button
-                  className="!bg-red-500 active:scale-95"
+                  disabled={data.status === "canceled"}
+                  className="!bg-green-500 active:scale-95"
+                  type="primary"
+                  onClick={() => handleCheck(data._id)}
+                >
+                  <AiOutlineCheck size={20} />
+                </Button>
+                
+                <Button
+                  disabled={data.status === "canceled" || data.status === "completed"}
+                  className="!bg-gray-500 active:scale-95"
                   type="primary"
                   onClick={() => handleDelete(data._id)}
                 >
-                  <AiOutlineDelete size={20} />
+                  <MdCancel size={20} />
                 </Button>
               </TableCell>
             </TableRow>
@@ -116,9 +160,10 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
             </button>
           </div>
         </div>
+
       </Table>
       
-      <BookingModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} createBooking={createBooking} setCreateBooking={setCreateBooking}/>
+      <BookingModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} updateBooking={updateBooking} setUpdateBooking={setUpdateBooking} createBooking={createBooking} setCreateBooking={setCreateBooking}/>
     </>
   );
 };
