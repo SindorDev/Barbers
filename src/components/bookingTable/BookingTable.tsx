@@ -4,7 +4,6 @@ import { MdCancel } from "react-icons/md";
 import {
   AiOutlineArrowLeft,
   AiOutlineArrowRight,
-  AiOutlineDelete,
 } from "react-icons/ai";
 import { Button, message } from "antd";
 import {
