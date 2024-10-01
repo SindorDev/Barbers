@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCreateBookingsMutation, useUpdateBookingsMutation } from "@/redux/api/booking-api";
+import { useCalculatePriceMutation, useCreateBookingsMutation, useUpdateBookingsMutation } from "@/redux/api/booking-api";
 import { useGetServiceQuery } from "@/redux/api/service-api";
 import { useGetBarberQuery } from "@/redux/api/user-api";
 import { FieldType } from "@/types";
@@ -44,7 +44,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
     useCreateBookingsMutation();
 
   const [updateBookings, {data: updateBookingsData, isSuccess: updateIsSuccess}] = useUpdateBookingsMutation()
-
+  const [calculatePrice, {data: calculatePriceData}] = useCalculatePriceMutation()
   const formatFormValues = (values: any) => {
     const formattedValues = { ...values };
     if (values.date) {
@@ -58,8 +58,6 @@ const BookingModal: React.FC<BookingModalProps> = ({
     }
     return formattedValues;
   };
-
-  console.log(updateBookingsData);
 
   const onFinish = () => {
     const values = form.getFieldsValue();
@@ -96,6 +94,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
       createBookings(formattedValues);
     }
   };
+  const handleSendService = (e: any) => {
+    calculatePrice(e)
+  } 
+
 
   useEffect(() => {
     if (isSuccess && bookingData) {
@@ -117,6 +119,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
   }, [updateBookingsData, updateIsSuccess])
 
   useEffect(() => {
+    
     if (updateBooking && Object.keys(updateBooking).length > 0) {
       form.setFieldsValue({
         barber: updateBooking.barber?._id,
@@ -124,12 +127,17 @@ const BookingModal: React.FC<BookingModalProps> = ({
         date: updateBooking.date ? dayjs(updateBooking.date) : null,
         start: updateBooking.start ? dayjs(updateBooking.start, format) : null,
         end: updateBooking.end ? dayjs(updateBooking.end, format) : null,
-        price: updateBooking.price,
       });
     } else {
       form.resetFields();
     }
   }, [updateBooking, form]);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      price: calculatePriceData?.payload.total,
+    })
+  }, [calculatePriceData])
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -160,7 +168,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
             className="w-full"
             rules={[{ required: true, message: "Please input your Barber!" }]}
           >
-            <Select>
+            <Select >
               {barberData?.payload?.map((item: any) => (
                 <Select.Option key={item._id} value={item._id}>
                   {item.first_name}
@@ -175,7 +183,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
             className="w-full"
             rules={[{ required: true, message: "Please input your Service!" }]}
           >
-            <Select mode="multiple">
+            <Select onChange={(e) => handleSendService(e)} mode="multiple">
               {data?.payload?.map((item: any) => (
                 <Select.Option key={item._id} value={item._id}>
                   {item.name}
@@ -213,7 +221,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
           className="w-full"
           rules={[{ required: true, message: "Please input your Price!" }]}
         >
-          <InputNumber className="w-full" />
+          <InputNumber disabled  className="w-full" />
         </Form.Item>
 
         <Button

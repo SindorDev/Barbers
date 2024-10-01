@@ -39,8 +39,17 @@ const BookingApi = api.injectEndpoints({
         method: "PATCH"
       }),
       invalidatesTags: ["Barbers"]
-    })
+    }),
+    
+  calculatePrice: build.mutation<Response, void>({
+    query: (body) => ({
+      url: "booking/calculate",
+      method: "POST",
+      body
+    }),
+    invalidatesTags: ["Barbers"]
+  })
   })
 });
 
-export const { useGetBookingQuery, useCreateBookingsMutation, useDeleteBookingMutation, useUpdateBookingsMutation, useCheckBookingMutation } = BookingApi
+export const { useGetBookingQuery, useCreateBookingsMutation, useDeleteBookingMutation, useUpdateBookingsMutation, useCheckBookingMutation, useCalculatePriceMutation } = BookingApi

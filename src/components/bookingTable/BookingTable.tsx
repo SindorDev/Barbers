@@ -90,7 +90,7 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
         </TableHeader>
         <TableBody>
           {currentData?.map((data: any) => (
-            <TableRow className={data.status === "canceled" ? "opacity-30" : ""} key={data._id}>
+            <TableRow className={data.status === "canceled" ? "opacity-30" : data.status === "completed" ? "bg-green-200 text-green-700" : ""} key={data._id}>
               <TableCell className="font-medium">
                 {data.barber.first_name}
               </TableCell>
@@ -108,7 +108,7 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
               <TableCell className="flex items-center gap-5">
                 
               <Button
-                  disabled={data.status === "canceled"}
+                  disabled={data.status === "canceled" || data.status === "completed"}
                   className="!bg-yellow-500 active:scale-95"
                   type="primary"
                   onClick={() => handleUpdate(data)}
@@ -116,7 +116,7 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
                   <FiEdit size={20} />
                 </Button>
                 <Button
-                  disabled={data.status === "canceled"}
+                  disabled={data.status === "canceled" || data.status === "completed"}
                   className="!bg-green-500 active:scale-95"
                   type="primary"
                   onClick={() => handleCheck(data._id)}
