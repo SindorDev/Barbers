@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { useCalculatePriceMutation, useCreateBookingsMutation, useUpdateBookingsMutation } from "@/redux/api/booking-api";
+import { useCalculatePriceMutation, useCreateBookingsMutation, useGetAvailableQuery, useUpdateBookingsMutation } from "@/redux/api/booking-api";
 import { useGetServiceQuery } from "@/redux/api/service-api";
 import { useGetBarberQuery } from "@/redux/api/user-api";
 import { FieldType } from "@/types";
-import type { DatePickerProps, TimePickerProps } from "antd";
+import type { TimePickerProps } from "antd";
 import dayjs from "dayjs";
 import {
   Modal,
@@ -14,6 +14,7 @@ import {
   message,
   DatePicker,
   TimePicker,
+  DatePickerProps
 } from "antd";
 import { useForm } from "antd/es/form/Form";
 
@@ -44,6 +45,9 @@ const BookingModal: React.FC<BookingModalProps> = ({
 
   const [updateBookings, {data: updateBookingsData, isSuccess: updateIsSuccess}] = useUpdateBookingsMutation()
   const [calculatePrice, {data: calculatePriceData}] = useCalculatePriceMutation()
+  const {data: availableData} = useGetAvailableQuery()
+  
+  console.log(availableData);
   const formatFormValues = (values: any) => {
     const formattedValues = { ...values };
     if (values.date) {
@@ -81,7 +85,6 @@ const BookingModal: React.FC<BookingModalProps> = ({
       setCreateBooking({ ...createBooking, end: time.format(format) });
     }
   };
-
 
   const handleSend = () => {
     const values = form.getFieldsValue();
@@ -146,6 +149,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
   };
 
   return (
+
     <Modal
       title={createBooking.edit ? "Update Booking" : "Create Booking"}
       className="!w-[700px]"
@@ -194,7 +198,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
 
         <div className="flex gap-5">
           <Form.Item name="date" label="Date" className="w-full">
-            <DatePicker className="w-full" onChange={onChange} />
+            <DatePicker   className="w-full" onChange={onChange} />
           </Form.Item>
 
           <Form.Item name="start" label="Start Time" className="w-full">

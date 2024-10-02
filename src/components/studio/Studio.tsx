@@ -8,8 +8,8 @@ const Studio = () => {
        <section className="bg-black pb-[80px]">
               <Container>
                      <div className="py-[60px] flex relative">
-                            <div className="w-full max-w-[680px] min-h-[666px] flex items-center justify-center rounded-full overflow-hidden shadow-cm">
-                                   <img src={data?.payload[0]?.image} alt={data?.payload[0]?.title} />
+                            <div className="w-full max-w-[680px] min-h-[666px] rounded-full overflow-hidden shadow-cm">
+                                   <img src={data?.payload[0]?.image} className="w-full object-cover h-full" alt={data?.payload[0]?.title} />
                             </div>
 
                             <div className="p-5 bg-[#D9D9D9] absolute bottom-[20px] left-[500px] rounded-lg w-full max-w-[700px]">

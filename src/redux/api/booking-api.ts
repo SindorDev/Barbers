@@ -48,8 +48,19 @@ const BookingApi = api.injectEndpoints({
       body
     }),
     invalidatesTags: ["Barbers"]
+  }),
+
+  getAvailable: build.query<Response, void>({
+    query: (params) => ({
+      url: "/booking/available",
+      method: "GET",
+      params
+     
+    }),
+    providesTags: ["Barbers"]
   })
   })
 });
 
-export const { useGetBookingQuery, useCreateBookingsMutation, useDeleteBookingMutation, useUpdateBookingsMutation, useCheckBookingMutation, useCalculatePriceMutation } = BookingApi
+export const { useGetBookingQuery, useCreateBookingsMutation, useDeleteBookingMutation, useUpdateBookingsMutation,
+   useCheckBookingMutation, useCalculatePriceMutation, useGetAvailableQuery } = BookingApi

@@ -40,7 +40,7 @@ const Hero = () => {
               Book Online
             </button>
           </div>
-          <div className="w-full max-w-[680px] p-2 rounded-2xl border border-black flex items-center justify-center">
+          <div className="w-full max-w-[680px] rounded-2xl border overflow-hidden flex items-center justify-center">
             <img
               src={serviceData?.payload[2]?.image}
               className="w-full rounded-lgw object-contain"
@@ -51,8 +51,8 @@ const Hero = () => {
         <div className="grid grid-cols-4 gap-5 mt-[100px] items-center justify-between">
         { serviceData?.payload && serviceData.payload.map((service: any) => (
             <div className="flex items-center flex-col gap-5">
-              <div className="w-[200px] rounded-sm overflow-hidden bg-slate-200 p-2 h-[150px]">
-              <img src={service.image} className="object-contain w-full h-full"  alt="category" />
+              <div className="w-[200px] overflow-hidden rounded-full h-[200px]">
+              <img src={service.image} className="object-cover w-full h-full"  alt="category" />
               </div>
               <h3 className="text-[27px] leading-[41px] font-normal title">
                 {service.name}

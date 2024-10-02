@@ -135,7 +135,7 @@ const RoutesController = () => {
               )
             },
             {
-              path: "reports",
+              path: "comment",
               element: (
                   <Suspense>
                       <Reports/>

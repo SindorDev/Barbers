@@ -16,16 +16,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { useCheckBookingMutation, useDeleteBookingMutation } from "@/redux/api/booking-api";
+import {useDeleteBookingMutation } from "@/redux/api/booking-api";
 import BookingModal from "../bookingModal/BookingModal";
+import CommentModal from "../commentModal/CommentModal";
 const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, createBooking: any, setCreateBooking: any }) => {
   
   const [deleteBooking, {data: deleteBookingData, isSuccess}] = useDeleteBookingMutation()
-  const [checkBooking, {data: checkBookingData, isSuccess: checkIsSuccess}] = useCheckBookingMutation()
-  
+  const [modalOpen, setModalOpen] = useState(false);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [updateBooking, setUpdateBooking] = useState([])
+  const [commentsData, setCommentsData] = useState([])
   const ITEMS_PER_PAGE = 5;
   const totalPages = Math.ceil(data?.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -36,8 +38,9 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
     deleteBooking(id as any);
   }    
 
-  const handleCheck = (id: string) => {
-    checkBooking(id as any)
+  const handleCheck = (data: any) => {
+    setModalOpen(true)
+    setCommentsData(data)
   }
 
   const handleUpdate = (data: any) => {
@@ -54,17 +57,11 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
   }, [deleteBookingData, isSuccess])
 
 
-  useEffect(() => {
-    if(checkBookingData && checkIsSuccess) {
-      message.success(checkBookingData?.message)
-    }
-  }, [checkBookingData, checkIsSuccess])
-
-
   return (
 
     <>
       <Table className="w-full text-emerald-900">
+
 
         <TableCaption>A list of Users</TableCaption>
         <TableHeader className="w-full">
@@ -105,7 +102,7 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
               <TableCell>{data.comment}</TableCell>
               <TableCell>{data.status}</TableCell>
               <TableCell className="flex items-center gap-5">
-                
+
               <Button
                   disabled={data.status === "canceled" || data.status === "completed"}
                   className="!bg-yellow-500 active:scale-95"
@@ -118,7 +115,7 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
                   disabled={data.status === "canceled" || data.status === "completed"}
                   className="!bg-green-500 active:scale-95"
                   type="primary"
-                  onClick={() => handleCheck(data._id)}
+                  onClick={() => handleCheck(data)}
                 >
                   <AiOutlineCheck size={20} />
                 </Button>
@@ -163,6 +160,7 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
       </Table>
       
       <BookingModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} updateBooking={updateBooking} setUpdateBooking={setUpdateBooking} createBooking={createBooking} setCreateBooking={setCreateBooking}/>
+      <CommentModal modalOpen={modalOpen} commentsData={commentsData} setCommentsData={setCommentsData} setModalOpen={setModalOpen}/>
     </>
   );
 };

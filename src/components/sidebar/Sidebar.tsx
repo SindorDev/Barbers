@@ -1,3 +1,4 @@
+import { FaComment } from "react-icons/fa"; 
 // eslint-disable-next-line react/prop-types, no-unused-vars
 import { TbBrandBooking, TbReportSearch } from "react-icons/tb"; 
 import { FaServicestack } from "react-icons/fa"; 
@@ -83,10 +84,11 @@ const Sidebar = ({ collapsed } : {collapsed: boolean}) => {
               icon: <TbBrandBooking size={22} /> ,
               label: <NavLink to={"booking"}>Booking</NavLink>,
             },
+            
             {
               key: "5",
-              icon: <TbReportSearch size={22} /> ,
-              label: <NavLink to={"reports"}>Reports</NavLink>,
+              icon: <FaComment size={18} /> ,
+              label: <NavLink to={"comment"}>Comments</NavLink>,
             }
           ]
           : 
@@ -105,8 +107,8 @@ const Sidebar = ({ collapsed } : {collapsed: boolean}) => {
             
             {
               key: "3",
-              icon: <TbReportSearch size={22} /> ,
-              label: <NavLink to={"reports"}>Reports</NavLink>,
+              icon: <FaComment size={22} /> ,
+              label: <NavLink to={"comment"}>Comments</NavLink>,
             }
           ]
         }

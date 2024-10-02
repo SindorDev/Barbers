@@ -92,12 +92,13 @@ export type FieldType = {
   price?: number;
   image?: string;
   _id?: string;
-  rating: string;
-  start: string;
-  end: string;
-  service: string;
-  barber: string;
-  client: string;
-  date: string
+  rating?: any;
+  start?: string;
+  end?: string;
+  service?: string;
+  barber?: string;
+  client?: string;
+  date?: string
   comment?: string;
+  message?: string
 };

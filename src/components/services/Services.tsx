@@ -13,8 +13,8 @@ const Services = () => {
                      <div>
                             <h1 className="text-[70px] text-center font-extrabold leading-[108px] text-white">Barbershop Services</h1>
                             <div className="mt-[42px] flex items-center justify-center gap-12">
-                                   <div className="w-full max-w-[500px] h-full flex items-center rounded-xl justify-center shadow-cm">
-                                          <img src={data?.payload[0]?.image} alt={data?.payload[0]?.name} className="w-full h-full object-contain" />
+                                   <div className="w-full max-w-[500px] h-full flex items-center overflow-hidden rounded-xl justify-center shadow-cm">
+                                          <img src={data?.payload[0]?.image} alt={data?.payload[0]?.name} className="w-full h-full object-cover" />
                                    </div>
 
                                    <div className="grid grid-cols-2 gap-10">
