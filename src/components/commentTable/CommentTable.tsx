@@ -12,35 +12,25 @@ import {
        TableRow,
      } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { Button, message } from "antd";
-import { useDeleteServiceMutation } from "@/redux/api/service-api";
-import CreateService from "../createService/CreateService";
-const ServiceTable = ({data}: {data: any}) => {
+import { Button, message} from "antd";
+import { useDeleteCommentMutation } from "@/redux/api/comment-api";
+const CommentTable = ({data}: {data: any}) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [updateService, setUpdateService] = useState([])
-  const [deleteOrder, {data: deleteOrderData, isSuccess}] = useDeleteServiceMutation()
   const ITEMS_PER_PAGE = 5;
   const totalPages = Math.ceil(data?.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentData = data?.slice(startIndex, endIndex);
-
+  const [deleteComment, {data: deleteCommentData, isSuccess}] = useDeleteCommentMutation()
   const handleDelete = (id: string) => {
-       deleteOrder(id as any)
-}
+    deleteComment(id as any)
+  }
 
-const handleUpdate = (data: any) => {
-  setUpdateService(data)
-  setIsModalOpen(true)
-}
-
-useEffect(() => {
-       if(isSuccess && deleteOrderData){
-              message.success(deleteOrderData?.message)
-       }
-}, [deleteOrderData, isSuccess])
-
+  useEffect(() => {
+    if(isSuccess && deleteCommentData){
+      message.success(deleteCommentData?.message)
+    }
+  }, [isSuccess, deleteCommentData])
 
   return (
     <>
@@ -49,20 +39,16 @@ useEffect(() => {
       
 
 
-<TableCaption>A list of Users</TableCaption>
-<TableHeader className="w-full">
-       <div>
-              <Button onClick={() => setIsModalOpen(true)} className="!bg-emerald-700 active:scale-95" type="primary">
-                     Create Service       
-              </Button>
-       </div>
-</TableHeader>
+<TableCaption>A list of Comment</TableCaption>
+
 <TableHeader>
   <TableRow className="!text-emerald-900">
     <TableHead>ID</TableHead>
-    <TableHead className="w-[30%]">Name</TableHead>
-    <TableHead>Price</TableHead>
-    <TableHead>Image</TableHead>
+    <TableHead>Barber Name</TableHead>
+    <TableHead>Client Name</TableHead>
+    <TableHead>Message</TableHead>
+    <TableHead>Status</TableHead>
+    <TableHead>Date</TableHead>
     <TableHead>Action</TableHead>
   </TableRow>
 </TableHeader>
@@ -73,17 +59,23 @@ useEffect(() => {
       <TableCell className="font-medium">
         {data._id}
       </TableCell>
-      <TableCell>{data.name}</TableCell>
-      <TableCell>${data.price}</TableCell>
-      <TableCell className="">
-       <img src={data.image} width={50} className="object-cover !h-[50px]  rounded-full shadow-slate-500 shadow-md" alt={data.name} />
+      <TableCell>{data.barber.first_name}</TableCell>
+      <TableCell>{data.client.first_name}</TableCell>
+      <TableCell className="!w-[20%]">
+       {data.message}
+      </TableCell>
+      <TableCell>
+       {data.status}
+      </TableCell>
+      
+      <TableCell>
+       {data.date}
       </TableCell>
       <TableCell>
               <div className="flex items-center gap-5">
-                     <Button className="!bg-yellow-500 active:scale-95" type="primary" onClick={() => handleUpdate(data)}>
-                            <BiMessageSquareEdit size={20} />
-                     </Button>
-                     <Button className="!bg-red-500 active:scale-95" type="primary" onClick={() => handleDelete(data._id)}>
+                     <Button className="!bg-red-500 active:scale-95" type="primary"
+                     onClick={() => handleDelete(data._id)}
+                     >
                             <AiOutlineDelete size={20} />
                      </Button>
               </div>
@@ -119,9 +111,8 @@ useEffect(() => {
 </div>
 </Table>
 
-<CreateService isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} updateServices={updateService} setUpdateService={setUpdateService}/>
     </>
   )
 }
 
-export default ServiceTable
+export default CommentTable

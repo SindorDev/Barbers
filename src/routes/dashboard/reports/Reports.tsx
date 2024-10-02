@@ -1,6 +1,15 @@
+import CommentTable from "@/components/commentTable/CommentTable"
+import { useGetCommentQuery } from "@/redux/api/comment-api"
+
 const Reports = () => {
+
+  const {data} = useGetCommentQuery()
+
+
   return (
-    <div>Comment</div>
+    <>
+      <CommentTable data={data?.payload}/>
+    </>
   )
 }
 

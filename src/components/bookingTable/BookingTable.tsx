@@ -5,7 +5,7 @@ import {
   AiOutlineArrowLeft,
   AiOutlineArrowRight,
 } from "react-icons/ai";
-import { Button, message } from "antd";
+import { Button, message, Modal  } from "antd";
 import {
   Table,
   TableBody,
@@ -22,8 +22,11 @@ import CommentModal from "../commentModal/CommentModal";
 const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, createBooking: any, setCreateBooking: any }) => {
   
   const [deleteBooking, {data: deleteBookingData, isSuccess}] = useDeleteBookingMutation()
+  
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [open, setOpen] = useState(false);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [updateBooking, setUpdateBooking] = useState([])
@@ -39,7 +42,6 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
   }    
 
   const handleCheck = (data: any) => {
-    setModalOpen(true)
     setCommentsData(data)
   }
 
@@ -55,6 +57,16 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
               message.success(deleteBookingData?.message)
        }
   }, [deleteBookingData, isSuccess])
+
+  const handleOk = () => {
+      setOpen(false);
+      setModalOpen(true)
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setOpen(false);
+  };
 
 
   return (
@@ -79,7 +91,6 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
             <TableHead>Date</TableHead>
             <TableHead>Start and End</TableHead>
             <TableHead>Price</TableHead>
-            <TableHead>Comment</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Action</TableHead>
           </TableRow>
@@ -99,7 +110,6 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
                 {data.start} - {data.end}
               </TableCell>
               <TableCell>${data.price}</TableCell>
-              <TableCell>{data.comment}</TableCell>
               <TableCell>{data.status}</TableCell>
               <TableCell className="flex items-center gap-5">
 
@@ -158,6 +168,16 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
         </div>
 
       </Table>
+
+      <Modal
+        title="Confirm Comment"
+        open={open}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Can you tell me about your barber?</p>
+      </Modal>
+
       
       <BookingModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} updateBooking={updateBooking} setUpdateBooking={setUpdateBooking} createBooking={createBooking} setCreateBooking={setCreateBooking}/>
       <CommentModal modalOpen={modalOpen} commentsData={commentsData} setCommentsData={setCommentsData} setModalOpen={setModalOpen}/>
