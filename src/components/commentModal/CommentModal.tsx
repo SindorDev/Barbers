@@ -20,7 +20,7 @@ const CommentModal = ({
     barber: "",
   });
 
-  const [createComment, {data: commentCreateData, isSuccess: commentIsSuccess}] = useCreateCommentMutation()
+  const [createComment, {data: commentCreateData, isSuccess: commentIsSuccess, error}] = useCreateCommentMutation()
   const [checkBooking, {data: checkBookingData, isSuccess: checkIsSuccess}] = useCheckBookingMutation()
   useEffect(() => {
     if (commentsData) {
@@ -46,8 +46,13 @@ const CommentModal = ({
          message.success(checkBookingData?.message)
        }
      }, [checkBookingData, checkIsSuccess])
-   
 
+     useEffect(() => {
+      if (error && 'data' in error && error.data && typeof error.data === 'object' && 'message' in error.data) {
+        message.error(error.data.message as string);
+        setModalOpen(false)
+      }
+     } ,[error])
 
   const handleCancel = () => {
     setModalOpen(false);
@@ -57,7 +62,7 @@ const CommentModal = ({
 
   const handleSendComment = () => {
        createComment({body: commentData, id: commentsData?.barber?._id })
-    checkBooking(commentsData._id as any)
+    checkBooking(commentsData?._id as any)
 };
 
   const onchange = () => {

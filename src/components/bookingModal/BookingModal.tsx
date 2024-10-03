@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo } from "react";
-import { useCalculatePriceMutation, useCreateBookingsMutation, useGetAvailableQuery, useUpdateBookingsMutation } from "@/redux/api/booking-api";
+import { useCalculatePriceMutation, useCreateBookingsMutation, useGetAvailableQuery, useGetBookingQuery, useUpdateBookingsMutation } from "@/redux/api/booking-api";
 import { useGetServiceQuery } from "@/redux/api/service-api";
 import { useGetBarberQuery } from "@/redux/api/user-api";
 import { FieldType } from "@/types";
-import type { TimePickerProps } from "antd";
-import dayjs from "dayjs";
+import type { CalendarProps, TimePickerProps } from "antd";
+import dayjs, { Dayjs } from "dayjs";
 import {
   Modal,
   Button,
@@ -41,10 +41,11 @@ const BookingModal: React.FC<BookingModalProps> = ({
   const { data } = useGetServiceQuery();
   const { data: barberData } = useGetBarberQuery();
   const [createBookings, { data: bookingData, isSuccess }] = useCreateBookingsMutation();
+  const {data: bookingsData} = useGetBookingQuery()
 
   const [updateBookings, {data: updateBookingsData, isSuccess: updateIsSuccess}] = useUpdateBookingsMutation();
   const [calculatePrice, {data: calculatePriceData}] = useCalculatePriceMutation();
-  const {data: availableData} = useGetAvailableQuery();
+  const {data: availableData} = useGetAvailableQuery({date: createBooking?.date || new Date().toISOString().split("T")[0]} as any, { refetchOnMountOrArgChange: true});
   
   const formatFormValues = (values: any) => {
     const formattedValues = { ...values };
@@ -69,6 +70,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
   const onChange: DatePickerProps["onChange"] = (date) => {
     if (date) {
       setCreateBooking({ ...createBooking, date: date.format("YYYY-MM-DD") });
+
     }
   };
 
@@ -145,39 +147,24 @@ const BookingModal: React.FC<BookingModalProps> = ({
     form.resetFields();
   };
 
-  const disabledDates = useMemo(() => {
-    if (!availableData?.payload) return [];
-    return availableData.payload.map((item: any) => dayjs(item.date));
-  }, [availableData]);
-
-  const disableDates: DatePickerProps['disabledDate'] = (current) => {
-    return !disabledDates.some((date: any) => date.isSame(current, 'day'));
-  };
-
-  const disabledTimes = (current: dayjs.Dayjs | null) => {
-    if (current) {
-      const selectedDate = form.getFieldValue('date');
-      const availableTimesForDate = availableData?.payload?.find((item: any) => 
-        dayjs(item.date).isSame(selectedDate, 'day')
-      )?.availableTimes;
-
-      if (availableTimesForDate) {
-        return {
-          disabledHours: () => {
-            const availableHours = availableTimesForDate.map((time: string) => parseInt(time.split(':')[0]));
-            return Array.from({ length: 24 }, (_, i) => i).filter(hour => !availableHours.includes(hour));
-          },
-          disabledMinutes: (selectedHour: number) => {
-            const availableMinutes = availableTimesForDate
-              .filter((time: string) => parseInt(time.split(':')[0]) === selectedHour)
-              .map((time: string) => parseInt(time.split(':')[1]));
-            return Array.from({ length: 60 }, (_, i) => i).filter(minute => !availableMinutes.includes(minute));
-          },
-        };
-      }
+  useEffect(() => {
+    if(availableData?.payload[0]?.barber) {
+      message.success("Today, our barber may have less time")
     }
-    return {};
+  }, [availableData?.payload])
+
+
+  const disabledDate: CalendarProps<Dayjs>['disabledDate'] = (current: any) => {
+    return current && current < dayjs().startOf('day');
   };
+
+  function checkAvailability(time: string, id: string) {
+    let result = bookingsData?.payload?.find((booking: any) => booking.barber._id === id && (booking.start <= time && booking.end > time));
+    return result
+  }
+
+
+
 
   return (
     <Modal
@@ -231,7 +218,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
             <DatePicker
               className="w-full"
               onChange={onChange}
-              disabledDate={disableDates}
+              disabledDate={disabledDate}
             />
           </Form.Item>
 
@@ -240,7 +227,15 @@ const BookingModal: React.FC<BookingModalProps> = ({
               className="w-full"
               onChange={onTimeChange}
               format={format}
-              disabledTime={disabledTimes}
+              disabledMinutes={(hour) => {
+                const disabledMinutes = [];
+                for (let i = 0; i <= 60; i++) {
+                  if (i % 30 !== 0) {
+                    disabledMinutes.push(i);
+                  }
+                }
+                return disabledMinutes;
+              }}
             />
           </Form.Item>
 
@@ -249,7 +244,15 @@ const BookingModal: React.FC<BookingModalProps> = ({
               className="w-full"
               onChange={onTimeChangeEnd}
               format={format}
-              disabledTime={disabledTimes}
+              disabledMinutes={(hour) => {
+                const disabledMinutes = [];
+                for (let i = 0; i <= 60; i++) {
+                  if (i % 30 !== 0) {
+                    disabledMinutes.push(i);
+                  }
+                }
+                return disabledMinutes;
+              }}
             />
           </Form.Item>
         </div>

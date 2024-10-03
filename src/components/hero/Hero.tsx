@@ -3,6 +3,7 @@ import { GoLocation } from "react-icons/go";
 
 import { Container } from "../../utils";
 import { useGetServiceQuery } from "@/redux/api/service-api";
+import { Link } from "react-router-dom";
 const Hero = () => {
   const { data: serviceData } = useGetServiceQuery();
 
@@ -37,7 +38,7 @@ const Hero = () => {
               </span>
             </div>
             <button className="py-5 px-9 mt-[45px] border rounded-[20px] border-black text-[30px] font-semibold leading-[45px]">
-              Book Online
+              <Link to={'/dashboard/booking'}>Book Online</Link>
             </button>
           </div>
           <div className="w-full max-w-[680px] rounded-2xl border overflow-hidden flex items-center justify-center">

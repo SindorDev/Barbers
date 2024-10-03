@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { Container } from "../utils"
 
 const Watch = () => {
@@ -36,6 +37,7 @@ const Watch = () => {
                             <div className="w-full max-w-[550px] bg-white rounded-[32px] min-h-[550px] p-5">
                                    <h2 className="text-[50px] leading-[76px] text-center font-bold text-[#B5AF93]">WORKING HOURSE</h2>
                                    <div className="flex my-[33px] items-center justify-center">
+
                                           <div className="flex items-center flex-col text-center gap-5 justify-center">
                                                  <div className="flex items-center gap-2">
                                                         <p className="text-[20px] font-normal">SUNDAY</p>
@@ -67,7 +69,7 @@ const Watch = () => {
                                                  </div>
                                           </div>
                                    </div>
-                            <button className="py-4 px-10 mx-auto block border rounded-[20px] border-black text-[20px] font-semibold leading-[25px]">Book Online</button>
+                            <button className="py-4 px-10 mx-auto block border rounded-[20px] border-black text-[20px] font-semibold leading-[25px]"><Link to={'/dashboard/booking'}>Book Online</Link></button>
                             </div>
                      </div>
               </Container>

@@ -43,6 +43,7 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
 
   const handleCheck = (data: any) => {
     setCommentsData(data)
+    setOpen(true)
   }
 
   const handleUpdate = (data: any) => {
@@ -64,7 +65,6 @@ const BookingTable = ({ data, createBooking, setCreateBooking }: { data: any, cr
   };
 
   const handleCancel = () => {
-    console.log('Clicked cancel button');
     setOpen(false);
   };
 

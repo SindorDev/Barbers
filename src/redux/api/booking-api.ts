@@ -58,7 +58,8 @@ const BookingApi = api.injectEndpoints({
      
     }),
     providesTags: ["Barbers"]
-  })
+  }),
+  
   })
 });
 

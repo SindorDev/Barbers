@@ -18,7 +18,6 @@ const SignUp = () => {
   const [signUpUser, {isLoading, data}] = useSignUpUserMutation()
   const navigate = useNavigate()
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
     signUpUser(values as any)
   };
 
@@ -29,9 +28,6 @@ const SignUp = () => {
     }
   }, [data])
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
   
   return (
     <div className='w-full h-screen flex items-center justify-center'>
@@ -42,7 +38,6 @@ const SignUp = () => {
     layout='vertical'
     initialValues={{ remember: true }}
     onFinish={onFinish}
-    onFinishFailed={onFinishFailed}
     autoComplete="off"
   >
     <div>
