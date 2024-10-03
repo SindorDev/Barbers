@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from "react";
-import { useCalculatePriceMutation, useCreateBookingsMutation, useGetAvailableQuery, useGetBookingQuery, useUpdateBookingsMutation } from "@/redux/api/booking-api";
+import { useEffect } from "react";
+import { useCalculatePriceMutation, useCreateBookingsMutation, useGetAvailableQuery, useUpdateBookingsMutation } from "@/redux/api/booking-api";
 import { useGetServiceQuery } from "@/redux/api/service-api";
 import { useGetBarberQuery } from "@/redux/api/user-api";
 import { FieldType } from "@/types";
@@ -41,7 +41,6 @@ const BookingModal: React.FC<BookingModalProps> = ({
   const { data } = useGetServiceQuery();
   const { data: barberData } = useGetBarberQuery();
   const [createBookings, { data: bookingData, isSuccess }] = useCreateBookingsMutation();
-  const {data: bookingsData} = useGetBookingQuery()
 
   const [updateBookings, {data: updateBookingsData, isSuccess: updateIsSuccess}] = useUpdateBookingsMutation();
   const [calculatePrice, {data: calculatePriceData}] = useCalculatePriceMutation();
@@ -158,14 +157,6 @@ const BookingModal: React.FC<BookingModalProps> = ({
     return current && current < dayjs().startOf('day');
   };
 
-  function checkAvailability(time: string, id: string) {
-    let result = bookingsData?.payload?.find((booking: any) => booking.barber._id === id && (booking.start <= time && booking.end > time));
-    return result
-  }
-
-
-
-
   return (
     <Modal
       title={createBooking.edit ? "Update Booking" : "Create Booking"}
@@ -227,7 +218,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
               className="w-full"
               onChange={onTimeChange}
               format={format}
-              disabledMinutes={(hour) => {
+              disabledMinutes={() => {
                 const disabledMinutes = [];
                 for (let i = 0; i <= 60; i++) {
                   if (i % 30 !== 0) {
@@ -244,7 +235,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
               className="w-full"
               onChange={onTimeChangeEnd}
               format={format}
-              disabledMinutes={(hour) => {
+              disabledMinutes={() => {
                 const disabledMinutes = [];
                 for (let i = 0; i <= 60; i++) {
                   if (i % 30 !== 0) {
